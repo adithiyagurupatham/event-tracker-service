@@ -1,0 +1,39 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /events-tracker
+
+spring:
+  application:
+    name: events-tracker-service
+  main:
+    banner-mode: console
+  profiles:
+    active: "${SPRING_PROFILES_ACTIVE:dev}"
+  devtools:
+    livereload:
+      enabled: false
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      acks: all
+      enable-idempotence: true
+      retries: 3
+      retry:
+        backoff-ms: 2000
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+
+retry:
+  attempts: 3
+  backoff: 2000
+core-pool:
+  size: "${CORE_POOL_SIZE:3}"
+
+scheduler:
+  fire-rate: 10
+
+mock:
+  api:
+    base-url: http://localhost:8080/events-tracker
